@@ -46,5 +46,4 @@ export class User {
     @OneToMany(()=>Ticket,(t)=>t.passenger)
     tickets:Ticket[]
 
-
 }
