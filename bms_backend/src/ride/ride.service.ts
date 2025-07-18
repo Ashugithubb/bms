@@ -23,40 +23,40 @@ export class RideService {
   }
 
   async findAllRideFromSourceToDestination(rideSearchDto: RideSearchDto) {
-    const { pickup_location, dropoff_location, ride_Date, departure_time, category } = rideSearchDto;
-    const rides= await this.rideRepo.find({
+    const { source, destination, ride_Date, departure_time, category } = rideSearchDto;
+    const rides = await this.rideRepo.find({
       where: {
-        source: ILike(`%${pickup_location}`),
-        destination: ILike(`%${dropoff_location}`),
+        source: ILike(`%${source}`),
+        destination: ILike(`%${destination}`),
         ride_Date,
         departure_time
       },
-      relations:['bus']
-      
+      relations: ['bus']
+
     }
     );
-    return rides.filter((c)=>c.bus.category==category);
+    return rides.filter((c) => c.bus.category == category);
   }
 
 
-  async findAllBusesFromSourceToDestination(buseSearchdto:RideSearchDto){
-    const { pickup_location, dropoff_location, ride_Date, departure_time, category } = buseSearchdto;
-    const rides= await this.rideRepo.find({
+  async findAllBusesFromSourceToDestination(buseSearchdto: RideSearchDto) {
+    const { source, destination, ride_Date, departure_time, category } = buseSearchdto;
+    const rides = await this.rideRepo.find({
       where: {
-        source: ILike(`%${pickup_location}`),
-        destination: ILike(`%${dropoff_location}`),
+        source: ILike(`%${source}`),
+        destination: ILike(`%${destination}`),
         ride_Date,
         departure_time
       },
-      relations:['bus'],
-      take:10,
+      relations: ['bus'],
+      take: 10,
     }
     );
     // return rides;
     return rides.map((r) => ({
-  fare: r.fare,
-  bus: r.bus,
-}))
+      fare: r.fare,
+      bus: r.bus,
+    }))
   }
 
   // async viewBusRideHistory(busId:number){
@@ -68,16 +68,16 @@ export class RideService {
   // }
 
   async viewBusRideHistory(busId: number) {
-  return await this.rideRepo.find({
-    where: {
-      bus: { busId }
-    },
-    relations: ['bus'], 
-    order: {
-      ride_Date: 'DESC', 
-    },
-  });
-}
+    return await this.rideRepo.find({
+      where: {
+        bus: { busId }
+      },
+      relations: ['bus'],
+      order: {
+        ride_Date: 'DESC',
+      },
+    });
+  }
 
 
 
@@ -92,4 +92,27 @@ export class RideService {
   async remove(id: number) {
     return await this.rideRepo.delete(id);
   }
+
+  async findSources(source: string) {
+    return await this.rideRepo.find({
+        where: {source: ILike(`%${source}%`)},
+        take: 5,
+        select:['source']
+      })
+ }
+
+async findDestination(destination: string) {
+    return await this.rideRepo.find({
+        where: {destination: ILike(`%${destination}%`)},
+        take: 5,
+        select:['destination']
+      })
+ }
+
+
+
+
 }
+
+
+

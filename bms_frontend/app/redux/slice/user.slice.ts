@@ -11,7 +11,7 @@ export const UserInfo = createAsyncThunk(
       const res = await axios.get('http://localhost:3001/user/info', {
         withCredentials: true,
       });
-      console.log(`data: ${res.data}`);
+     console.log("data:", res.data);
       return res.data; // Return user data to the reducer
     } catch (error) {
       return thunkAPI.rejectWithValue('Failed to fetch user profile');

@@ -1,10 +1,9 @@
 export enum Gender {
   MALE = 'Male',
   FEMALE = 'Female',
-  OTHER = 'Other',
-}
+  OTHER = 'Other',}
 
-export enum Role {
-  USER = 'Passenger',
-  ADMIN = 'Owner',
-}
+  export enum Role{
+    PASSANGER = 'Passenger',
+    OWNER = 'Owner'
+  }

@@ -41,6 +41,7 @@ export default function SignupForm() {
         },
     });
     const onSubmit = async (data: SignupFormData) => {
+        console.log(data);
         try {
             const res = await axios.post('http://localhost:3001/user/signup', data);
             console.log(res);
@@ -54,6 +55,7 @@ export default function SignupForm() {
             } else {
                 toast.error("Something went wrong");
             }
+            console.log(error);
         }
     };
 
@@ -67,7 +69,7 @@ export default function SignupForm() {
                 minHeight="100vh"
                 bgcolor="#f5f5f5"
             >
-                <Paper elevation={3} sx={{ padding: 4, width: 350 }}>
+                <Paper elevation={3} sx={{ padding: 4, width: 450 }}>
                     <Typography variant="h5" gutterBottom>
                         Sign Up
                     </Typography>
@@ -129,7 +131,7 @@ export default function SignupForm() {
                             margin="normal"
                         >
                             {Object.values(Role).map((value) => (
-                                <MenuItem key={value} value={value}>{value.toLocaleUpperCase()}
+                                <MenuItem key={value} value={value}>{value}
                                 </MenuItem>
                             ))}
                         </TextField>

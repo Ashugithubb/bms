@@ -3,10 +3,10 @@ import { Category } from "src/bus/enums/bus.enum";
 
 export class RideSearchDto{
     @IsString()
-     pickup_location: string;
+     source: string;
 
     @IsString()
-    dropoff_location: string;
+    destination: string;
 
     @IsString()
     ride_Date: string;

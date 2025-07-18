@@ -33,6 +33,21 @@ export class RideController {
     return this.rideService.viewBusRideHistory(+id);
   }
 
+  @Get('search')
+  findSources(@Query('source') source:string){
+    return this.rideService.findSources(source);
+  }
+
+   @Get('searchd')
+  findDestination(@Query('destination') destination:string){
+    return this.rideService.findDestination(destination);
+  }
+
+
+
+
+
+
 
 
   @Get(':id')

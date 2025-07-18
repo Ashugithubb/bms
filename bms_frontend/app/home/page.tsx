@@ -3,21 +3,25 @@ import { useAppDispatch, useAppSelector } from "@/app/redux/hook/hook";
 import { UserInfo } from "@/app/redux/slice/user.slice";
 import { Typography } from "@mui/material";
 import { useEffect } from "react";
+import Navbar from "../component/navbar";
+import { SearchRide } from "../component/searchRide";
 
 export default function DashBoard(){
     const dispatch = useAppDispatch();
-    const email = useAppSelector((state)=>state.user.profile?.first_name)
+    const name = useAppSelector((state)=>state.user.profile?.first_name)
     useEffect(()=>{
        setTimeout(function() {
-  console.log("This message appears after 2 seconds.");
+        dispatch(UserInfo())
+ 
 }, 5000);
 
-    },[dispatch])
+    },[])
 
     return(
         <>
-        {console.log(email)}
-        <Typography color="secondary">Home</Typography>
+        <Navbar/>
+        <Typography color="secondary">{name}</Typography>
+        <SearchRide/>
         </>
     )
 }

@@ -16,6 +16,12 @@ export class User {
     @Column()
     last_name: string
 
+    @Column({
+        type: 'enum',
+        enum: Gender,
+        default: Gender.MALE,
+    })
+    gender: Gender   
 
     @Column({ unique: true })
     email: string
@@ -27,14 +33,9 @@ export class User {
     @MinLength(10, { message: 'Phone number must be at  10 digits long.' })
     phone: string
 
-    @Column({
-        type: 'enum',
-        enum: Gender,
-        default: Gender.OTHER,
-    })
-    gender: Gender 
+   
     
-    @Column({ type: 'enum', enum: Role })
+    @Column({ type: 'enum', enum: Role ,default:Role.PASSANGER})
     role: Role
 
     @CreateDateColumn()
