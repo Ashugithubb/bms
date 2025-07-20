@@ -3,8 +3,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import userReducer from '../slice/user.slice';
-
-import storage from 'redux-persist/lib/storage'; // ✅ correct import
+import rideBusReducer from '../slice/ride.bus.slice'
+import storage from 'redux-persist/lib/storage'; 
 import { persistStore, persistReducer } from 'redux-persist';
 
 const persistConfig = {
@@ -15,6 +15,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  ride:rideBusReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

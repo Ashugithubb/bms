@@ -26,9 +26,11 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch('update')
+  update( @Body() updateUserDto: UpdateUserDto,@Req() req) {
+    console.log("Body received:",updateUserDto);
+
+    return this.userService.update(+req.user.id, updateUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -36,4 +38,11 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+    @UseGuards(JwtAuthGuard)
+  @Get('bus')
+  async findBusId(@Req() req){
+   return this.userService.findBus(+req.user.id);
+  }
+
 }

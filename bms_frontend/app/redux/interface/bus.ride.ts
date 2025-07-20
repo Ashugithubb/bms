@@ -20,3 +20,10 @@ interface Ride {
   Stop_duration: string;
   bus: Bus;
 }
+
+interface RideState {
+  loading: boolean;
+  error: string | null;
+  Rides: Ride[] | null;
+}
+

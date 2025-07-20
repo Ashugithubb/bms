@@ -34,6 +34,25 @@ export class UserService {
       return await this.userRepo.findOneBy({id})
   }
 
+//   async findBusId(id: number): Promise<number | null> {
+//   const user = await this.userRepo.findOne({
+//     where: { id },
+//     relations: ['bus'],
+//   });
+
+//   if (!user || !user.bus) {
+//     return null; // or throw NotFoundException if preferred
+//   }
+
+//   return user.bus.busId;
+// }
+  async findBus(userId:number){
+    return await this.userRepo.findOne({
+        where:{id:userId},
+        relations:['bus'],
+    })
+  }
+
   async findAll() {
     return await this.userRepo.find();
   }

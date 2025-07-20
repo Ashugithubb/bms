@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Req } from '@nestjs/common';
 import { RideService } from './ride.service';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
@@ -11,10 +11,10 @@ export class RideController {
 
 
   @UseGuards(JwtAuthGuard)
-  @Post('/:busId')
-  create(@Param('busId') busId: string, @Body() createRideDto: CreateRideDto) {
+  @Post('create')
+  create( @Body() createRideDto: CreateRideDto,@Req() req) {
 
-    return this.rideService.createRide(createRideDto, +busId);
+    return this.rideService.createRide(createRideDto,+req.user.id);
   }
   @Get('rides')
   findAllRideFromSourceToDestination(@Query() query: RideSearchDto){

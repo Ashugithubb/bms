@@ -6,12 +6,16 @@ import { Ride } from './entities/ride.entity';
 import { ILike, Repository } from 'typeorm';
 import { BusService } from 'src/bus/bus.service';
 import { RideSearchDto } from './dto/ride.search.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class RideService {
   constructor(@InjectRepository(Ride) private readonly rideRepo: Repository<Ride>,
-    private readonly busService: BusService) { }
-  async createRide(createRideDto: CreateRideDto, busId: number) {
+    private readonly busService: BusService,
+    private readonly userService:UserService) { }
+  async createRide(createRideDto: CreateRideDto,userId:number) {
+    const user = await this.userService.findOne(userId);
+    const busId =1;
     const bus = await this.busService.busDetails(busId);
     if (!bus) return { "msg": "Bus does not exist" }
     const newRide = await this.rideRepo.create({

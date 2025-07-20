@@ -2,7 +2,9 @@
 import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { useAppDispatch, useAppSelector } from "../redux/hook/hook";
+import { RideBusInfo } from "../redux/slice/ride.bus.slice";
+import { ToastContainer, toast } from 'react-toastify';
 export function SearchRide() {
     const [searchSource, setSearchSource] = useState('');
     const [searchDestination, setSearchDestination] = useState('')
@@ -15,7 +17,8 @@ export function SearchRide() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
 
-    const [rides, setRides] = useState<Ride[]>([]);
+    // const [rides, setRides] = useState<Ride[]>([]);
+    const rides = useAppSelector((state) => state.ride.Rides);
 
     const handleChange = (event: SelectChangeEvent) => {
         setCatgory(event.target.value as string);
@@ -42,7 +45,6 @@ export function SearchRide() {
     }, [searchSource]);
 
     useEffect(() => {
-        console.log('monunt1')
         const debounce = setTimeout(async () => {
             if (searchDestination.trim() === '') {
                 setDestination([]);
@@ -54,16 +56,16 @@ export function SearchRide() {
                 });
                 setDestination(res.data);
                 console.log(res.data);
-                console.log('monunt2')
+
             } catch (error) {
                 console.log("Fetch error:", error);
-                console.log('monunt3')
+
             }
         }, 2000);
-        console.log('monunt4')
         return () => clearTimeout(debounce);
     }, [searchDestination]);
 
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -75,18 +77,25 @@ export function SearchRide() {
             departure_time: departure_time,
             category: category
         };
-
-        try {
-            const response = await axios.get('http://localhost:3001/ride/rides', { params });
-            console.log('Ride search results:', response.data);
-            setRides(response.data);
-        } catch (error) {
-            console.error('Error fetching rides:', error);
-        }
+        console.log("dispatching");
+        dispatch(RideBusInfo(params));
     };
+    const handleBookTicket = async (rideId: number) => {
+        try {
+            const res = await axios.post(`http://localhost:3001/ticket/${rideId}`,{},
+                {withCredentials:true}
+            )
+            toast(`Ticket Booked: ${JSON.stringify(res.data.bookedAt)}`);
+        }
+        catch (error) {
+            console.log()
+            toast.error(`Ticket Booking Failed${error}`)
+        }
+    }
 
     return (
         <>
+            <ToastContainer />
             <Typography>Search Rides</Typography>
 
             <form onSubmit={handleSubmit}>
@@ -143,10 +152,10 @@ export function SearchRide() {
             </List> */}
 
 
-            {rides.length === 0 ? (
+            {rides?.length === 0 ? (
                 <Typography>No Rides</Typography>
             ) : (
-                rides.map((r, index) => (
+                rides?.map((r, index) => (
                     <Box key={index} sx={{ width: "500px", border: '1px solid gray', p: 2, mt: 2 }}>
                         <Typography variant="h6">Ride ID: {r.rideId}</Typography>
                         <Typography>Source: {r.source}</Typography>
@@ -168,7 +177,9 @@ export function SearchRide() {
                                 <Typography>Color: {r.bus?.color}</Typography>
                                 <Typography>Total Seats: {r.bus?.total_seats}</Typography>
                                 <Typography>Reg. no.: {r.bus?.regno}</Typography>
-                                <Button variant="contained">Book Ticket</Button>
+                                <Button onClick={() => handleBookTicket(r.rideId)} variant="contained">
+                                    Book Ticket
+                                </Button>
                             </Box>
                         )}
                     </Box>
