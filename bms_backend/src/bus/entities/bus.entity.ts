@@ -26,7 +26,7 @@ export class Bus {
     @CreateDateColumn()
     registeredAt:Date
 
-    @ManyToOne(()=>User,(u)=>u.bus)
+    @ManyToOne(()=>User,(u)=>u.bus,{ onDelete: 'CASCADE' })
     owner:User
 
     @OneToMany(()=>Ride,(r)=>r.bus,{ onDelete: 'CASCADE' })
