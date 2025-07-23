@@ -32,6 +32,11 @@ export class BusService {
   }
 
   async busDetails(busId: number) {
+    const data = await this.busRepo.findOne({
+      where:{busId:busId},
+      relations:['ride'],
+    })
+  
     return await this.busRepo.findOneBy({busId});
   }
 
