@@ -98,7 +98,7 @@ export class RideService {
   }
 
   async findSources(source: string) {
-    return await this.rideRepo.find({
+    return await this.rideRepo.find({ //check
         where: {source: ILike(`%${source}%`)},
         take: 5,
         select:['source']
